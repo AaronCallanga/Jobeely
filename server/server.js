@@ -33,10 +33,10 @@ mongoose
     useNewUrlParser: true, // Ensures compatibility with modern MongoDB connection string
     useUnifiedTopology: true, // Provides improved server discovery and monitoring
   })
-  .then(() => console.log("Database connected"))
+  .then(() => console.log(`Database connected at ${process.env.MONGO_URI}`))
   .catch((err) => console.log("Database connection error: " + err));
 
  server = app.listen(process.env.PORT, () => {
-  console.log("Server Started: " + process.env.PORT);
+  console.log("Server Started: http://localhost:" + process.env.PORT);
   console.log("Environment: " + process.env.NODE_ENV);
 });

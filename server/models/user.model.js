@@ -21,3 +21,5 @@ const userSchema = new mongoose.Schema(
 );
 
 module.exports = mongoose.model("User", userSchema);
+
+// create middleware to encrypt password userSchema.pre("save", middleware)
