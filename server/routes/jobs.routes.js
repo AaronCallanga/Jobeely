@@ -7,6 +7,8 @@ router.get('/saved', (req, res) => {res.json({message: `Saved Jobs`})}) //see al
 router.post('/save', (req, res) => {res.json({message: `Save Job`})})   //kind of bookmark job, saved to db
 router.delete('/:id', (req, res) => {res.json({message: `Delete a saved Job by id ${req.params.id}`})})
 
+export default router;
+
 /*
 function simplifyJobData(rawJob) {
     return {

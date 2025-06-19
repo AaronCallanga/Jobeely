@@ -8,3 +8,5 @@ router.get('/:id', (req, res) => {res.json({message: `Get Resume By Id: ${req.pa
 router.delete('/:id', (req, res) => {res.json({message: `Delete Resume By Id: ${req.params.id}`})})
 router.put('/:id', (req, res) => {res.json({message: `Update Resume By Id: ${req.params.id}`})})
 router.post('/upload', (req, res) => {res.json({message: `Upload Resume`})})    //upload then parse then save db
+
+export default router;
