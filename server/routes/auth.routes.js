@@ -1,10 +1,11 @@
 import {Router} from "express";
+import {signIn, signOut, signUp} from "../controllers/auth.controller.js";
 
 const router = Router();
 
-router.post('/sign-up', (req, res) => {res.json({message: `Sign Up`})})
-router.post('/sign-in', (req, res) => {res.json({message: `Sign In`})})
-router.post('/sign-out', (req, res) => {res.json({message: `Sign Out`})})
+router.post('/sign-up', signUp)
+router.post('/sign-in', signIn)
+router.post('/sign-out', signOut)
 
 export default router;      //allow us to use any name when importing, but when we export const router (variable name) we need to import using import { router }
 

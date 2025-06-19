@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+import mongoose from "mongoose";
 
 const resumeSchema = new mongoose.Schema(
   {
@@ -23,8 +23,8 @@ const resumeSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-module.exports = mongoose.model("Resume", resumeSchema);
-
+const Resume = mongoose.model("Resume", resumeSchema);
+export default Resume;
 // const resume = await Resume.findById(resumeId);
 // const sessions = await ChatSession.find({ resume: resumeId });
 // res.json({ resume, sessions });
