@@ -30,10 +30,10 @@ process.on("unhandledRejection", (err) => {
   });
 });
 
-const uploadDir = path.join("public", "uploads");
-if (!fs.existsSync(uploadDir)) {
-    fs.mkdirSync(uploadDir, { recursive: true }); // ✅ Create nested folders if needed
-}
+// const uploadDir = path.join("public", "uploads");
+// if (!fs.existsSync(uploadDir)) {
+//     fs.mkdirSync(uploadDir, { recursive: true }); // ✅ Create nested folders if needed
+// }
 
 mongoose
   .connect(process.env.MONGO_URI, {
