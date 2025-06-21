@@ -1,11 +1,12 @@
 import {Router} from 'express';
+import UserController from "../controllers/user.controller.js";
 
 const router = Router();
 
-router.get('/', (req, res) => {res.json({message: "Get All Users"})})   //for admin
-router.get('/:id', (req, res) => {res.json({message: `Get User By Id: ${req.params.id}`})})  // for user profile
-router.delete('/:id', (req, res) => {res.json({message: `Delete User By Id: ${req.params.id}`})}) //admin
-router.put('/:id', (req, res) => {res.json({message: `Update User By Id: ${req.params.id}`})}) // updating user profile
-router.post('/', (req, res) => {res.json({message: `Create user`})}) //admin
+router.get('/', UserController.getAllUsers)   //for admin
+router.get('/:id', UserController.getUserById)  // for user profile
+router.delete('/:id', UserController.deleteUserById) //admin
+router.put('/:id', UserController.updateUserById) // updating user profile
+router.post('/', UserController.createUser) //admin
 
 export default router;

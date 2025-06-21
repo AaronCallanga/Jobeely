@@ -6,7 +6,7 @@ const resumeSchema = new mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
     },
-    fileUrl: {
+    filePath: {
       type: String,
       required: true,
     },
@@ -14,7 +14,7 @@ const resumeSchema = new mongoose.Schema(
         type: String,
         default: "Untitled File"
     },
-    filteType: {
+    fileType: {
         type: String,
         required: true
     },

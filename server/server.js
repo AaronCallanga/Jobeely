@@ -1,6 +1,8 @@
 import mongoose from "mongoose";
 import dotenv from "dotenv";
 import app from "./app.js";
+import fs from "fs";
+import path from "path";
 
 dotenv.config();
 
@@ -27,6 +29,11 @@ process.on("unhandledRejection", (err) => {
     process.exit(1);
   });
 });
+
+const uploadDir = path.join("public", "uploads");
+if (!fs.existsSync(uploadDir)) {
+    fs.mkdirSync(uploadDir, { recursive: true }); // ✅ Create nested folders if needed
+}
 
 mongoose
   .connect(process.env.MONGO_URI, {
