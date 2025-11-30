@@ -1,15 +1,17 @@
 import {Router} from 'express';
+import JobController from '../controllers/jobs.controllers.js';
+
 
 const router = new Router();
 
-router.get('/search', (req, res) => {res.json({message: `Search Jobs`})})   // will only return the response of Rapid API
+router.get('/search', JobController.searchJobs)   // will only return the response of Rapid API
 router.get('/saved', (req, res) => {res.json({message: `Saved Jobs`})}) //see all the bookmarked jobs
 router.post('/save', (req, res) => {res.json({message: `Save Job`})})   //kind of bookmark job, saved to db
 router.delete('/:id', (req, res) => {res.json({message: `Delete a saved Job by id ${req.params.id}`})})
 
 export default router;
 
-/*
+/* https://rapidapi.com/letscrape-6bRBa3QguO5/api/jsearch
 function simplifyJobData(rawJob) {
     return {
         job_id: rawJob.job_id,

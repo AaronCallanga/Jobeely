@@ -7,4 +7,4 @@
 7. must only access their own resources
 8. morgan request logging https://github.com/noobruz/node-express-typescript-oop/blob/main/src/utils/logger.ts
 9. helmet, rate limiter, cors 
-
+10. simplify job search json
