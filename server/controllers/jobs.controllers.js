@@ -12,7 +12,7 @@ const searchJobs = catchAsync(async (req, res) => {
   res.status(200).json({
     success: true,
     message: "Job search results retrieved successfully.",
-    data: results.data, // Assuming the API response has a 'data' field
+    data: results, // Assuming the API response has a 'data' field
   });
 });
 
