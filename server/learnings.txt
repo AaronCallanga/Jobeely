@@ -1,0 +1,32 @@
+app.js (or server.js) - This is the Application Entry Point. It initializes the Express application, applies all global middleware, sets up error handlers, and loads all the Route files.
+
+server.js (or app.js) - This file (if separate from app.js) contains the code that actually creates and starts the HTTP server by calling app.listen(port). It also handles non-Express tasks like connecting to the database.
+
+app.use() - This method mounts a middleware function or a sub-router (a set of routes) at a specified path. It's how you tell Express to use a specific function or set of routes for every request (or requests matching a path).
+Uses: 
+1. Global/Application-Level Middleware: You use app.use() without a path to apply middleware to every single incoming request. Ex: app.use(express.json()); app.use(cors()); app.use(morgan('dev')); for logging request
+2. Router Mounting: You use app.use() with a path to mount a set of specific routes (which you define in your separate route files). Ex: app.use('/api/v1/auth', authRoutes); app.use('/api/v1/users', authorize, userRoutes)
+
+
+Routes - Routes define the endpoint (URL + HTTP method) and point it directly to the handler function, usually in the controller.
+
+Middleware - Intercepts the request. Middleware are functions that have access to the request/response cycle and can execute code, modify the request/response objects, end the cycle, or move to the next step using next().
+
+Controllers - Handles HTTP context (req, res, status codes) and delegates complex logic to service.
+
+Services - Contains all reusable business rules, calculations, and data orchestration.
+
+Models - In Mongoose/MongoDB, this defines the schema and provides the methods for interacting with the database (e.g., User.find()).
+
+
+Your understanding of the request flow is largely correct, but it's important to see where middleware fits in the chain, as it can happen at different stages.
+The flow goes like this:
+🧍 User/Client Request: Sends an HTTP request (e.g., POST /api/v1/users/signup).
+⬇️ Server Entry (app.js): The request hits your Express application.
+1️⃣ Global Middleware: The request immediately passes through any middleware you mounted globally using app.use() (e.g., JSON parser, CORS).
+2️⃣ Routing: Express checks its mounted routers (app.use('/api/v1', router)) to find a match for the URL.
+3️⃣ Route-Specific Middleware (The "Intercept"): If the router finds a match, it executes any middleware specific to that route (e.g., JWT authentication middleware).
+4️⃣ Controller: The request finally lands in the Controller function (e.g., userController.signUp).
+5️⃣ Service: The Controller immediately delegates the business logic to the Service (e.g., AuthService.signUp).
+6️⃣ Model/DB: The Service uses the Model to interact with the database (e.g., User.create()).
+7️⃣ Response Back: The result goes from Model $\rightarrow$ Service $\rightarrow$ Controller (which sets the status code and sends the response) $\rightarrow$ Client.

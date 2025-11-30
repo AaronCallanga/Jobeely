@@ -2,6 +2,7 @@ import {Router} from "express";
 import upload from "../middlewares/multer.middleware.js";
 import ResumeController from "../controllers/resume.controller.js";
 
+
 const router = Router();
 
 router.get('/', ResumeController.getAllResumes)  // for admin

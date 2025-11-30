@@ -1,7 +1,10 @@
 1. gzip
-2. zod
+2. zod validation for request(maybe as middleware) and respose
 3. passport
 4. file upload
 5. email
 6. role based
 7. must only access their own resources
+8. morgan request logging https://github.com/noobruz/node-express-typescript-oop/blob/main/src/utils/logger.ts
+9. helmet, rate limiter, cors 
+
