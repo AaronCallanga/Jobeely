@@ -3,8 +3,14 @@ import ResumeService from "../service/resume.service.js";
 
 const uploadResume = catchAsync(async (req, res) => {
   const file = req.file;
+  const userId = req.user._id;
 
-  const resume = await ResumeService.upload(file);
+  if (!file)
+    return res
+      .status(400)
+      .json({ success: false, message: "No file uploaded" });
+
+  const resume = await ResumeService.upload(file, userId);
 
   res.status(201).json({
     success: true,
@@ -50,16 +56,16 @@ const getResumeById = catchAsync(async (req, res) => {
 });
 
 const deleteResumeById = catchAsync(async (req, res) => {
-    const resumeId = req.params.id; // Assuming the ID comes from the route parameters
+  const resumeId = req.params.id; // Assuming the ID comes from the route parameters
 
-    // 1. Delegate deletion logic to the service (file deletion included)
-    await ResumeService.deleteResumeById(resumeId);
+  // 1. Delegate deletion logic to the service (file deletion included)
+  await ResumeService.deleteResumeById(resumeId);
 
-    // 2. Send successful HTTP response (204 No Content is often used for successful deletion)
-    res.status(204).json({
-        success: true,
-        data: null // Explicitly return null or an empty object for 204
-    });
+  // 2. Send successful HTTP response (204 No Content is often used for successful deletion)
+  res.status(204).json({
+    success: true,
+    data: null, // Explicitly return null or an empty object for 204
+  });
 });
 
 const ResumeController = {
@@ -67,7 +73,7 @@ const ResumeController = {
   getResumeByUserId,
   getAllResumes,
   getResumeById,
-  deleteResumeById
+  deleteResumeById,
 };
 
 export default ResumeController;
