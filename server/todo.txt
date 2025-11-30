@@ -1,0 +1,5 @@
+1. gzip
+2. zod
+3. passport
+4. file upload
+5. email
