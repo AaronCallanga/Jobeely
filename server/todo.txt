@@ -3,3 +3,5 @@
 3. passport
 4. file upload
 5. email
+6. role based
+7. must only access their own resources

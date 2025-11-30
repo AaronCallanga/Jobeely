@@ -1,7 +1,7 @@
-import User from "../models/user.model";
+import User from "../models/user.model.js";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
-import AppError from "../utils/AppError";
+import AppError from "../utils/AppError.js";
 
 const signUp = async (email, password) => {
   // 1. Check If user already exists (BUSINESS LOGIC)

@@ -1,47 +1,49 @@
-import User from '../models/user.model.js';
+
+import UserService from "../service/user.service.js";
 import catchAsync from "../utils/catchAsync.js";
-import AppError from "../utils/AppError.js";
+// Note: User, bcrypt, and jwt are removed as they are service-level concerns
 
 const getAllUsers = catchAsync(async (req, res) => {
-    const users = await User.find().select("-password");
-
-    return res.status(200).json({success: true, data: users});
-})
+    // 1. Controller delegates to the Service
+    const users = await UserService.getAll();
+    
+    // 2. Controller handles HTTP response
+    res.status(200).json({ success: true, data: users });
+});
 
 const getUserById = catchAsync(async (req, res) => {
-    const user = await User.findById(req.params.id).select("-password");
-
-    if (!user) throw new AppError(`User not found with the ID: ${req.params.id}`, 404);
-
-    return res.status(200).json({success: true, data: user});
-})
+    // 1. Controller delegates: extracts id from req.params
+    const user = await UserService.getById(req.params.id);
+    
+    // 2. Controller handles HTTP response
+    res.status(200).json({ success: true, data: user });
+});
 
 const createUser = catchAsync(async (req, res) => {
-    const {email, password, isVerified} = req.body;
+    // 1. Controller delegates: passes req.body data
+    const created = await UserService.create(req.body);
 
-    const created = await User.create({email, password, isVerified});
-    res.status(201).send({success: true, data: created});
-})
+    // 2. Controller handles HTTP response
+    res.status(201).send({ success: true, data: created });
+});
 
 const updateUserById = catchAsync(async (req, res) => {
-    const updated = await User.findByIdAndUpdate(req.params.id, req.body, {
-        new: true,
-        runValidators: true,
-    });
+    // 1. Controller delegates: passes id and body
+    const updated = await UserService.update(req.params.id, req.body);
 
-    if (!updated) throw new AppError(`User not found with the ID: ${req.params.id}`, 404);
-
-    return res.status(200).json({success: true, message: "User updated succesfully", data: updated});
-})
+    // 2. Controller handles HTTP response
+    res.status(200).json({ success: true, message: "User updated successfully", data: updated });
+});
 
 const deleteUserById = catchAsync(async (req, res) => {
-    const deleted = await User.findByIdAndDelete(req.params.id);
+    // 1. Controller delegates
+    await UserService.remove(req.params.id);
 
-    if (!deleted) throw new AppError(`User not found with the ID: ${req.params.id}`, 404);
+    // 2. Controller handles HTTP response
+    res.status(200).json({ success: true, message: "User deleted successfully" });
+});
 
-    return res.status(200).json({success: true, message: "User deleted successfully"});
-})
-
+// Export the final controller object
 const UserController = {
     getAllUsers,
     getUserById,
@@ -51,10 +53,3 @@ const UserController = {
 }
 
 export default UserController;
-export {        // For Testing
-    getAllUsers,
-    getUserById,
-    updateUserById,
-    deleteUserById,
-    createUser
-}
