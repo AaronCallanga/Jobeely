@@ -56,6 +56,17 @@ const jobsSchema = new mongoose.Schema(
       type: String,
       default: null,
     },
+    
+    // --- Qualification and Resposibilities ---
+    qualifications: {
+      type: [String], 
+      default: [],
+    },
+
+    responsibilities: {
+      type: [String], 
+      default: [],
+    },
 
     // --- Optional Detail Fields ---
     isRemote: {

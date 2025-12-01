@@ -26,14 +26,13 @@ const searchJobs = async (query, page = 1, country = "ph") => {
     // 3. Business Logic/Transformation (e.g., simplifying the data structure)
     // For simplicity, we just return the full data object here.
 
-    return JSearchUtil.simplifyJobResponseMapper(data);
+    return JSearchUtil.mapJobListResponse(data);
   } catch (error) {
     // Service logs the API error and throws it up to the controller/catchAsync
     console.error("Job Search Service Error:", error.message);
     throw error; // Re-throw the error for the controller/global handler
   }
 };
-
 
 const getSavedJobDetail = async (savedJobId) => {
   const job = await Job.findById(savedJobId);
@@ -74,7 +73,6 @@ const saveJob = async (jobData, userId) => {
 
   return savedJob;
 };
-
 
 const deleteSavedJob = async (savedJobId, userId) => {
   // Find and delete, ensuring the job belongs to the user for security
