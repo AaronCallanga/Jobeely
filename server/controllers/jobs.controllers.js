@@ -2,17 +2,14 @@ import JobService from "../service/jobs.service.js";
 import catchAsync from "../utils/catchAsync.js";
 
 const searchJobs = catchAsync(async (req, res) => {
-  // 1. Controller extracts data from the request (using req.query for GET requests)
   const { query, page, country } = req.query;
 
-  // 2. Controller delegates business logic to the service, AWAITING the result
   const results = await JobService.searchJobs(query, page, country);
 
-  // 3. Controller sends the final HTTP response
   res.status(200).json({
     success: true,
     message: "Job search results retrieved successfully.",
-    data: results, // Assuming the API response has a 'data' field
+    data: results, 
   });
 });
 
@@ -20,11 +17,11 @@ const getJobDetail = catchAsync(async (req, res) => {
     const jobId = req.params.jobId;
 
     // Delegate to the service to fetch from the external API
-    const jobDetail = await JobService.getJobDetailFromApi(jobId);
+    const jobDetail = await JobService.getJobDetail(jobId);
 
     res.status(200).json({
         success: true,
-        message: `Detailed job view for external ID ${externalId} retrieved.`,
+        message: `Detailed job view for external ID ${jobId} retrieved.`,
         data: jobDetail,
     });
 });
@@ -99,6 +96,7 @@ const deleteSavedJob = catchAsync(async (req, res) => {
 
 const JobController = {
   searchJobs,
+  getJobDetail,
   getSavedJobs,
   saveJob,
   getSavedJobDetail,

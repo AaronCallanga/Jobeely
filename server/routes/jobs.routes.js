@@ -4,7 +4,7 @@ import JobController from "../controllers/jobs.controllers.js";
 const router = new Router();
 // --- PUBLIC/SEARCH ROUTES ---
 router.get("/search", JobController.searchJobs); // will only return the response of Rapid API
-router.get("/detail/:jobId", JobController.getJobDetailFromApiController);
+router.get("/detail/:jobId", JobController.getJobDetail);
 
 // --- BOOKMARKED JOB ROUTES ---
 router.get("/saved", JobController.getSavedJobs); //see all the bookmarked jobs, maybe allow ai to give advice or give recommendation base on the saved jobs
