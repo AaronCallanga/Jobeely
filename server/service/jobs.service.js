@@ -33,7 +33,61 @@ const searchJobs = async (query, page = 1, country = "ph") => {
   }
 };
 
+const getSavedJobs = async (userId) => {
+  const savedJobs = await SavedJob.find({ user: userId })
+    .select(
+      "id title company location employmentType posted isRemote salaryRange savedAt externalId"
+    )
+    .sort({ savedAt: -1 }); // Show most recently saved jobs first
 
+  return savedJobs;
+};
+
+const saveJob = async (jobData, userId) => {
+  // Prevent duplicates: Check if the job is already saved by this user
+  const existingJob = await SavedJob.findOne({
+    user: userId,
+    externalId: jobData.externalId,
+  });
+
+  if (existingJob) {
+    throw new AppError("This job is already saved by the user.", 409); // 409 Conflict
+  }
+
+  // Create the new document using the jobData passed from the controller
+  const savedJob = await SavedJob.create({
+    ...jobData,
+    user: userId,
+    // The rest of the fields (title, description, company, etc.) map directly from jobData
+  });
+
+  return savedJob;
+};
+
+const getSavedJobDetail = async (savedJobId) => {
+  const job = await SavedJob.findById(savedJobId);
+
+  if (!job) {
+    throw new AppError(`Saved job not found with ID: ${savedJobId}`, 404);
+  }
+  return job;
+};
+
+const deleteSavedJob = async (savedJobId, userId) => {
+  // Find and delete, ensuring the job belongs to the user for security
+  const deletedJob = await SavedJob.findOneAndDelete({
+    _id: savedJobId,
+    user: userId,
+  });
+
+  if (!deletedJob) {
+    // Not found or not owned by the user
+    throw new AppError(
+      `Saved job not found or does not belong to the user.`,
+      404
+    );
+  }
+};
 
 const JobService = {
   searchJobs,
