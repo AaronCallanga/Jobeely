@@ -37,6 +37,48 @@ const fetchJsearch = async (queryParams) => {
 };
 
 /**
+ * Executes a query against the JSearch API to fetch detailed information for a single job.
+ * @param {string} queryParams - The full query string for the API path (e.g., "job_id=n20AgUu1KG0BGjzoAAAAAA%3D%3D").
+ * @returns {object} The parsed JSON response data.
+ */
+const fetchJobDetail = async (queryParams) => {
+    // IMPORTANT: Use environment variables for sensitive data like API keys!
+    const BASE_URL = "https://jsearch.p.rapidapi.com/job-details";
+
+    // Construct the full URL
+    const url = `${BASE_URL}?${queryParams}`;
+
+    const options = {
+        method: "GET",
+        headers: {
+            // Using process.env to securely load keys
+            "x-rapidapi-key": process.env.JSEARCH_API_KEY,
+            "x-rapidapi-host": "jsearch.p.rapidapi.com",
+            "Content-Type": "application/json", // Good practice to include
+        },
+    };
+
+    try {
+        const response = await fetch(url, options);
+
+        if (!response.ok) {
+            // Throw a meaningful error if the API call fails (e.g., 404, 403)
+            // Read the error body if possible for debugging
+            const errorBody = await response.text();
+            console.error("JSearch Detail API Raw Error:", errorBody);
+            throw new Error(`JSearch Job Detail API failed with status: ${response.status}`);
+        }
+
+        // Return the parsed JSON object
+        return response.json(); 
+    } catch (error) {
+        // Log the internal fetch/network error and re-throw a standardized one
+        console.error("JSearch Job Detail API Error:", error.message);
+        throw new Error("Could not fetch job detail data from the job search provider.");
+    }
+};
+
+/**
  * Transforms the verbose JSearch API response into a simplified array of job objects.
  * @param {object} apiResponse - The raw JSON object returned by the JSearch API.
  * @returns {Array<object>} A clean, simplified array of job listings.
@@ -168,6 +210,7 @@ export const mapJobDetailResponse = (apiResponse) => {
 
 const JSearchUtil = {
   fetchJsearch,
+  fetchJobDetail,
   mapJobListResponse,
   mapJobDetailResponse,
 };

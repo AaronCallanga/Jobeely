@@ -34,6 +34,29 @@ const searchJobs = async (query, page = 1, country = "ph") => {
   }
 };
 
+/**
+ * Fetches detailed job information from the external API (for search results).
+ * @param {string} jobId - The external ID (from JSearch API) of the job.
+ * @returns {object} The detailed, mapped job data.
+ */
+const getJobDetail = async (jobId) => {
+  try {
+    const queryParams = `job_id=${jobId}`;
+    const data = await JSearchUtil.fetchJobDetail(queryParams);
+
+    return JSearchUtil.mapJobDetailResponse(data);
+  } catch (error) {
+    console.error(
+      `External Job Detail Service Error for ID ${jobId}:`,
+      error.message
+    );
+    throw new AppError(
+      "Could not retrieve detailed job data from external source.",
+      503
+    );
+  }
+};
+
 const getSavedJobDetail = async (savedJobId) => {
   const job = await Job.findById(savedJobId);
 
@@ -92,6 +115,7 @@ const deleteSavedJob = async (savedJobId, userId) => {
 
 const JobService = {
   searchJobs,
+  getJobDetail,
   getSavedJobs,
   saveJob,
   getSavedJobDetail,
