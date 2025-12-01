@@ -33,6 +33,16 @@ const searchJobs = async (query, page = 1, country = "ph") => {
   }
 };
 
+
+const getJobDetail = async (savedJobId) => {
+  const job = await SavedJob.findById(savedJobId);
+
+  if (!job) {
+    throw new AppError(`Saved job not found with ID: ${savedJobId}`, 404);
+  }
+  return job;
+};
+
 const getSavedJobs = async (userId) => {
   const savedJobs = await SavedJob.find({ user: userId })
     .select(
@@ -64,14 +74,6 @@ const saveJob = async (jobData, userId) => {
   return savedJob;
 };
 
-const getSavedJobDetail = async (savedJobId) => {
-  const job = await SavedJob.findById(savedJobId);
-
-  if (!job) {
-    throw new AppError(`Saved job not found with ID: ${savedJobId}`, 404);
-  }
-  return job;
-};
 
 const deleteSavedJob = async (savedJobId, userId) => {
   // Find and delete, ensuring the job belongs to the user for security
@@ -91,6 +93,10 @@ const deleteSavedJob = async (savedJobId, userId) => {
 
 const JobService = {
   searchJobs,
+  getSavedJobs,
+  saveJob,
+  getJobDetail,
+  deleteSavedJob,
 };
 
 export default JobService;
