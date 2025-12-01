@@ -16,6 +16,19 @@ const searchJobs = catchAsync(async (req, res) => {
   });
 });
 
+const getJobDetail = catchAsync(async (req, res) => {
+    const jobId = req.params.jobId;
+
+    // Delegate to the service to fetch from the external API
+    const jobDetail = await JobService.getJobDetailFromApi(jobId);
+
+    res.status(200).json({
+        success: true,
+        message: `Detailed job view for external ID ${externalId} retrieved.`,
+        data: jobDetail,
+    });
+});
+
 const getSavedJobs = catchAsync(async (req, res) => {
   const userId = req.user._id;
 

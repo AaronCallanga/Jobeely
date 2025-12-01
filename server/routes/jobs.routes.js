@@ -1,14 +1,16 @@
-import {Router} from 'express';
-import JobController from '../controllers/jobs.controllers.js';
-
+import { Router } from "express";
+import JobController from "../controllers/jobs.controllers.js";
 
 const router = new Router();
+// --- PUBLIC/SEARCH ROUTES ---
+router.get("/search", JobController.searchJobs); // will only return the response of Rapid API
+router.get("/detail/:jobId", JobController.getJobDetailFromApiController);
 
-router.get('/search', JobController.searchJobs)   // will only return the response of Rapid API
-router.get('/saved', JobController.getSavedJobs) //see all the bookmarked jobs, maybe allow ai to give advice or give recommendation base on the saved jobs
-router.post('/save', JobController.saveJob)   //kind of bookmark job, saved to db
-router.get('/:id', JobController.getSavedJobDetail)
-router.delete('/:id', JobController.deleteSavedJob)
+// --- BOOKMARKED JOB ROUTES ---
+router.get("/saved", JobController.getSavedJobs); //see all the bookmarked jobs, maybe allow ai to give advice or give recommendation base on the saved jobs
+router.post("/save", JobController.saveJob); //kind of bookmark job, saved to db
+router.get("/saved/:id", JobController.getSavedJobDetail);
+router.delete("/:id", JobController.deleteSavedJob);
 
 export default router;
 
