@@ -1,3 +1,4 @@
+import Job from "../models/job.model.js";
 import AppError from "../utils/AppError.js";
 import JSearchUtil from "../utils/jsearch.api.js";
 
@@ -34,8 +35,8 @@ const searchJobs = async (query, page = 1, country = "ph") => {
 };
 
 
-const getJobDetail = async (savedJobId) => {
-  const job = await SavedJob.findById(savedJobId);
+const getSavedJobDetail = async (savedJobId) => {
+  const job = await Job.findById(savedJobId);
 
   if (!job) {
     throw new AppError(`Saved job not found with ID: ${savedJobId}`, 404);
@@ -44,7 +45,7 @@ const getJobDetail = async (savedJobId) => {
 };
 
 const getSavedJobs = async (userId) => {
-  const savedJobs = await SavedJob.find({ user: userId })
+  const savedJobs = await Job.find({ user: userId })
     .select(
       "id title company location employmentType posted isRemote salaryRange savedAt externalId"
     )
@@ -55,7 +56,7 @@ const getSavedJobs = async (userId) => {
 
 const saveJob = async (jobData, userId) => {
   // Prevent duplicates: Check if the job is already saved by this user
-  const existingJob = await SavedJob.findOne({
+  const existingJob = await Job.findOne({
     user: userId,
     externalId: jobData.externalId,
   });
@@ -65,7 +66,7 @@ const saveJob = async (jobData, userId) => {
   }
 
   // Create the new document using the jobData passed from the controller
-  const savedJob = await SavedJob.create({
+  const savedJob = await Job.create({
     ...jobData,
     user: userId,
     // The rest of the fields (title, description, company, etc.) map directly from jobData
@@ -77,7 +78,7 @@ const saveJob = async (jobData, userId) => {
 
 const deleteSavedJob = async (savedJobId, userId) => {
   // Find and delete, ensuring the job belongs to the user for security
-  const deletedJob = await SavedJob.findOneAndDelete({
+  const deletedJob = await Job.findOneAndDelete({
     _id: savedJobId,
     user: userId,
   });
@@ -95,7 +96,7 @@ const JobService = {
   searchJobs,
   getSavedJobs,
   saveJob,
-  getJobDetail,
+  getSavedJobDetail,
   deleteSavedJob,
 };
 
